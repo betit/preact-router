@@ -117,6 +117,56 @@ describe('preact-router', () => {
 
 			router.componentWillUnmount();
 		});
+
+		it('should skip updating when called with same url', () => {
+			let router = new Router({
+				url: '/foo',
+				children: [
+					<foo path="/" />,
+					<foo path="/foo" />
+				]
+			}, {});
+			sinon.spy(router, 'routeTo');
+			sinon.spy(router, 'setState');
+
+			router.componentWillMount();
+
+			expect(route('/foo')).to.equal(false);
+			expect(router.routeTo)
+				.to.have.been.calledOnce
+				.and.calledWithExactly('/foo');
+			expect(router.setState).to.have.callCount(0);
+
+			router.componentWillUnmount();
+		});
+
+		it('should ignore changes in the hash-fragment', () => {
+			let router = new Router({
+				url: '/foo',
+				children: [
+					<foo path="/" />,
+					<foo path="/foo" />
+				]
+			}, {});
+			sinon.spy(router, 'routeTo');
+			sinon.spy(router, 'setState');
+
+			router.componentWillMount();
+
+			expect(route('#bar')).to.equal(false);
+			expect(router.routeTo)
+				.to.have.callCount(1)
+				.and.calledWithExactly('#bar');
+			expect(router.setState).to.have.callCount(0);
+
+			expect(route('/foo#bar')).to.equal(false);
+			expect(router.routeTo)
+				.to.have.callCount(2)
+				.and.calledWithExactly('/foo#bar');
+			expect(router.setState).to.have.callCount(0);
+
+			router.componentWillUnmount();
+		});
 	});
 
 	describe('route()', () => {
