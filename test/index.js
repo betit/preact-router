@@ -172,7 +172,7 @@ describe('preact-router', () => {
 	describe('route()', () => {
 		let router;
 
-		before( () => {
+		beforeEach( () => {
 			router = new Router({
 				url: '/foo',
 				children: [
@@ -186,7 +186,7 @@ describe('preact-router', () => {
 			router.componentWillMount();
 		});
 
-		after( () => {
+		afterEach( () => {
 			router.componentWillUnmount();
 		});
 
