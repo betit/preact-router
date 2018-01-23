@@ -1,5 +1,5 @@
 import { h, Component } from 'preact';
-import { subscribers, getCurrentUrl, Link as StaticLink } from 'preact-router';
+import { subscribers, getCurrentUrl, Link as StaticLink } from '@betit/preact-router';
 
 export class Match extends Component {
 	update = url => {
